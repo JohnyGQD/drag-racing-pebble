@@ -1,0 +1,66 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "Jan Gruncl",
+    "longName": "Drag Racing",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/right.png",
+                "name": "right",
+                "type": "png"
+            },
+            {
+                "file": "images/icon.png",
+                "menuIcon": true,
+                "name": "ICON",
+                "type": "png"
+            },
+            {
+                "file": "images/mark.png",
+                "name": "MARK",
+                "type": "png"
+            },
+            {
+                "file": "images/buildings.png",
+                "name": "BUILDINGS",
+                "type": "png"
+            },
+            {
+                "file": "images/nitro.png",
+                "name": "NITRO",
+                "type": "png"
+            },
+            {
+                "file": "images/down.png",
+                "name": "DOWN",
+                "type": "png"
+            },
+            {
+                "file": "images/up.png",
+                "name": "UP",
+                "type": "png"
+            },
+            {
+                "file": "images/racing.png",
+                "name": "RACING",
+                "type": "png"
+            },
+            {
+                "file": "images/muscle.png",
+                "name": "MUSCLE",
+                "type": "png"
+            }
+        ]
+    },
+    "shortName": "Drag Racing",
+    "uuid": "3aa57c3d-5cfd-4c42-9d00-ea019c49b393",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
