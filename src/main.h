@@ -15,10 +15,10 @@ static const uint8_t SETTING_ID_BUDGET = 40;
 
 static const int DIFFICULTY_COEFFICIENT_EASY = 9;
 static const int DIFFICULTY_COEFFICIENT_MEDIUM = 11;
-static const int DIFFICULTY_COEFFICIENT_HARD = 14;
+static const int DIFFICULTY_COEFFICIENT_HARD = 13;
 
-static const int REWARD_COEFFICIENT_EASY = 8;
-static const int REWARD_COEFFICIENT_MEDIUM = 11;
+static const int REWARD_COEFFICIENT_EASY = 9;
+static const int REWARD_COEFFICIENT_MEDIUM = 13;
 static const int REWARD_COEFFICIENT_HARD = 17;
 
 static const int PRICE_COEFFICIENT = 500;

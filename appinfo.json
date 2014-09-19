@@ -9,14 +9,14 @@
     "resources": {
         "media": [
             {
-                "file": "images/right.png",
-                "name": "right",
-                "type": "png"
-            },
-            {
                 "file": "images/icon.png",
                 "menuIcon": true,
                 "name": "ICON",
+                "type": "png"
+            },
+            {
+                "file": "images/right.png",
+                "name": "right",
                 "type": "png"
             },
             {
@@ -59,7 +59,7 @@
     "shortName": "Drag Racing",
     "uuid": "3aa57c3d-5cfd-4c42-9d00-ea019c49b393",
     "versionCode": 1,
-    "versionLabel": "1.0",
+    "versionLabel": "1.1",
     "watchapp": {
         "watchface": false
     }

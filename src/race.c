@@ -504,7 +504,6 @@ static void render() {
   
   if (started) {
     long distance_difference = (player_distance - opponent_distance) / 500;
-    //distance_difference = 10;
     
     int player_x = distance_difference + 14;
     if (player_x>28) player_x = 28;
@@ -514,7 +513,7 @@ static void render() {
     if (opponent_x>128) opponent_x = 128;
     if (opponent_x<-100) opponent_x = -100;
     
-    int buildings_x = 128 - (((player_distance+380)/10) % 162);
+    int buildings_x = 128 - (((player_distance+380)/20) % 162);
     
     layer_set_frame(player_layer, GRect(player_x, 93, 100, 30));
     layer_mark_dirty(player_layer);

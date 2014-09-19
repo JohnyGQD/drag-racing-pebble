@@ -5,6 +5,7 @@
 #include <car_selection.h>
 #include <garage.h>
 #include <hiscore.h>
+#include <help.h>
 
 // BEGIN AUTO-GENERATED UI CODE; DO NOT MODIFY
 static Window *s_window;
@@ -12,7 +13,7 @@ static MenuLayer *menu;
 
 static void initialise_ui(void) {
   s_window = window_create();
-  window_set_fullscreen(s_window, false);
+  window_set_fullscreen(s_window, 0);
   
   // menu
   menu = menu_layer_create(GRect(0, 0, 144, 152));
@@ -35,39 +36,42 @@ static uint16_t menu_get_num_sections_callback(MenuLayer *menu_layer, void *data
 }
 
 static uint16_t menu_get_num_rows_callback(MenuLayer *menu_layer, uint16_t section_index, void *data) {
-  return 3;
+  return 4;
 }
 
 static int16_t menu_get_header_height_callback(MenuLayer *menu_layer, uint16_t section_index, void *data) {
-  return 48;
+  return 37;
 }
 
 static int16_t menu_get_cell_height_callback(MenuLayer *menu_layer, MenuIndex *cell_index, void *data) {
-    return 34;
+    return 28;
 }
 
 static void menu_draw_header_callback(GContext* ctx, const Layer *cell_layer, uint16_t section_index, void *data) {
   graphics_context_set_fill_color(ctx, GColorBlack);
-  graphics_fill_rect(ctx, GRect(6, 6, 132, 37), 20, GCornersAll);
+  graphics_fill_rect(ctx, GRect(19, 4, 110, 30), 20, GCornersAll);
   
   graphics_context_set_text_color(ctx, GColorWhite);
-  graphics_draw_text(ctx, "Drag Racing", fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD), GRect(5, 5, 134, 28), GTextOverflowModeFill, GTextAlignmentCenter, NULL);
+  graphics_draw_text(ctx, "Drag Racing", fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD), GRect(19, 2, 110, 24), GTextOverflowModeFill, GTextAlignmentCenter, NULL);
 }
 
 static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuIndex *cell_index, void *data) {
   graphics_context_set_text_color(ctx, GColorBlack);
   
-  GRect row_rect = GRect(5, -2, 134, 34);
+  GRect row_rect = GRect(5, -3, 134, 28);
   
   switch (cell_index->row) {
     case 0:
-      graphics_draw_text(ctx, "Race", fonts_get_system_font(FONT_KEY_GOTHIC_28), row_rect, GTextOverflowModeFill, GTextAlignmentLeft, NULL);
+      graphics_draw_text(ctx, "Race", fonts_get_system_font(FONT_KEY_GOTHIC_24), row_rect, GTextOverflowModeFill, GTextAlignmentLeft, NULL);
       break;
     case 1:
-      graphics_draw_text(ctx, "Garage", fonts_get_system_font(FONT_KEY_GOTHIC_28), row_rect, GTextOverflowModeFill, GTextAlignmentLeft, NULL);
+      graphics_draw_text(ctx, "Garage", fonts_get_system_font(FONT_KEY_GOTHIC_24), row_rect, GTextOverflowModeFill, GTextAlignmentLeft, NULL);
       break;
     case 2:
-      graphics_draw_text(ctx, "High score", fonts_get_system_font(FONT_KEY_GOTHIC_28), row_rect, GTextOverflowModeFill, GTextAlignmentLeft, NULL);
+      graphics_draw_text(ctx, "High score", fonts_get_system_font(FONT_KEY_GOTHIC_24), row_rect, GTextOverflowModeFill, GTextAlignmentLeft, NULL);
+      break;
+    case 3:
+      graphics_draw_text(ctx, "How to play", fonts_get_system_font(FONT_KEY_GOTHIC_24), row_rect, GTextOverflowModeFill, GTextAlignmentLeft, NULL);
       break;
   }
 }
@@ -88,6 +92,9 @@ static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, v
       break;
     case 2:
         show_hiscore();
+      break;
+    case 3:
+        show_help();
       break;
   }
 }

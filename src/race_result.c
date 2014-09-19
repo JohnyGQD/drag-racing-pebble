@@ -70,12 +70,22 @@ static void handle_window_unload(Window* window) {
   destroy_ui();
 }
 
+static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
+  hide_race_result();
+}
+
+static void click_config_provider(void *context) {
+  window_single_click_subscribe(BUTTON_ID_SELECT, select_click_handler);
+}
+
 void show_race_result(void) {
   initialise_ui();
   window_set_window_handlers(s_window, (WindowHandlers) {
     .unload = handle_window_unload,
   });
   window_stack_push(s_window, true);
+  
+  window_set_click_config_provider(s_window, click_config_provider);
   
   light_enable(true);
   
