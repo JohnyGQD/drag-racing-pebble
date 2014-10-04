@@ -65,7 +65,8 @@ static void destroy_ui(void) {
 // END AUTO-GENERATED UI CODE
 
 static void handle_window_unload(Window* window) {
-  light_enable(false);
+  if (get_backlight_on())
+    light_enable(false);
   
   destroy_ui();
 }
@@ -87,7 +88,8 @@ void show_race_result(void) {
   
   window_set_click_config_provider(s_window, click_config_provider);
   
-  light_enable(true);
+  if (get_backlight_on())
+    light_enable(true);
   
   if (race_win) text_layer_set_text(big_result, "You win!");  
   else text_layer_set_text(big_result, "You lose...");  

@@ -48,6 +48,14 @@ int32_t get_budget() {
   return persist_read_int(SETTING_ID_BUDGET);  
 }
 
+bool get_backlight_on() {
+  return persist_read_bool(SETTING_ID_BACKLIGHT_ON);  
+}
+
+bool get_low_power() {
+  return persist_read_bool(SETTING_ID_LOW_POWER);  
+}
+
 void set_car_type(int value) {
   persist_write_int(SETTING_ID_CAR_TYPE, value);
 }
@@ -82,4 +90,12 @@ void set_best_time_score(int32_t value) {
 
 void set_budget(int32_t value) {
   persist_write_int(SETTING_ID_BUDGET, value);  
+}
+
+void set_backlight_on(bool value) {
+  persist_write_bool(SETTING_ID_BACKLIGHT_ON, value);  
+}
+
+void set_low_power(bool value) {
+  persist_write_bool(SETTING_ID_LOW_POWER, value);  
 }

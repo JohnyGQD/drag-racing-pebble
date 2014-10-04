@@ -9,6 +9,16 @@
     "resources": {
         "media": [
             {
+                "file": "images/trees.png",
+                "name": "TREES",
+                "type": "png-trans"
+            },
+            {
+                "file": "images/buildings.png",
+                "name": "BUILDINGS",
+                "type": "png-trans"
+            },
+            {
                 "file": "images/icon.png",
                 "menuIcon": true,
                 "name": "ICON",
@@ -22,11 +32,6 @@
             {
                 "file": "images/mark.png",
                 "name": "MARK",
-                "type": "png"
-            },
-            {
-                "file": "images/buildings.png",
-                "name": "BUILDINGS",
                 "type": "png"
             },
             {
@@ -59,7 +64,7 @@
     "shortName": "Drag Racing",
     "uuid": "3aa57c3d-5cfd-4c42-9d00-ea019c49b393",
     "versionCode": 1,
-    "versionLabel": "1.1",
+    "versionLabel": "1.2",
     "watchapp": {
         "watchface": false
     }

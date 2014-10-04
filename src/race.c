@@ -4,11 +4,13 @@
 #include <race_result.h>
   
 static const int UPDATE_INTERVAL = 10;
-static const int RENDERING_INTERVAL = 33;
+static const int HIGH_POWER_RENDERING_INTERVAL = 30;
+static const int LOW_POWER_RENDERING_INTERVAL = 40;
   
 static Layer *rpm_layer;
 static Layer *player_layer;
 static Layer *opponent_layer;
+static Layer *trees_layer;
 static Layer *buildings_layer;
 static Layer *gear_layer;
 static Layer *duration_layer;
@@ -54,6 +56,9 @@ static int current_difficulty_coefficient;
 
 static int progress_width;
 
+static int rendering_interval;
+static bool low_power_mode;
+
 // BEGIN AUTO-GENERATED UI CODE; DO NOT MODIFY
 static Window *s_window;
 static GFont s_res_gothic_14;
@@ -66,6 +71,8 @@ static GBitmap *s_res_nitro;
 static GBitmap *s_res_right;
 static GBitmap *s_res_down;
 static GBitmap *s_res_mark;
+static GBitmap *s_res_trees_black;
+static GBitmap *s_res_buildings_black;
 static TextLayer *info;
 static TextLayer *gear;
 static BitmapLayer *lane_bottom;
@@ -73,6 +80,7 @@ static BitmapLayer *progress;
 static BitmapLayer *lane_top;
 static BitmapLayer *opponent;
 static BitmapLayer *player;
+static BitmapLayer *trees;
 static BitmapLayer *buildings;
 static BitmapLayer *buttons_background;
 static BitmapLayer *up;
@@ -92,12 +100,13 @@ static void initialise_ui(void) {
   s_res_gothic_28_bold = fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD);
   s_res_racing = gbitmap_create_with_resource(RESOURCE_ID_RACING);
   s_res_muscle = gbitmap_create_with_resource(RESOURCE_ID_MUSCLE);
-  s_res_buildings = gbitmap_create_with_resource(RESOURCE_ID_BUILDINGS);
   s_res_up = gbitmap_create_with_resource(RESOURCE_ID_UP);
   s_res_nitro = gbitmap_create_with_resource(RESOURCE_ID_NITRO);
   s_res_right = gbitmap_create_with_resource(RESOURCE_ID_right);
   s_res_down = gbitmap_create_with_resource(RESOURCE_ID_DOWN);
   s_res_mark = gbitmap_create_with_resource(RESOURCE_ID_MARK);
+  s_res_trees_black = gbitmap_create_with_resource(RESOURCE_ID_TREES_BLACK);
+  s_res_buildings_black = gbitmap_create_with_resource(RESOURCE_ID_BUILDINGS_BLACK);
   // info
   info = text_layer_create(GRect(21, 123, 102, 17));
   text_layer_set_text(info, " ");
@@ -139,10 +148,16 @@ static void initialise_ui(void) {
   bitmap_layer_set_background_color(player, GColorWhite);
   layer_add_child(window_get_root_layer(s_window), (Layer *)player);
   
+  // trees
+  trees = bitmap_layer_create(GRect(10, 14, 41, 28));
+  bitmap_layer_set_bitmap(trees, s_res_trees_black);
+  bitmap_layer_set_background_color(opponent, GColorClear);
+  layer_add_child(window_get_root_layer(s_window), (Layer *)trees);
+  
   // buildings
   buildings = bitmap_layer_create(GRect(90, 14, 34, 28));
-  bitmap_layer_set_bitmap(buildings, s_res_buildings);
-  bitmap_layer_set_background_color(buildings, GColorWhite);
+  bitmap_layer_set_bitmap(buildings, s_res_buildings_black);
+  bitmap_layer_set_background_color(opponent, GColorClear);
   layer_add_child(window_get_root_layer(s_window), (Layer *)buildings);
   
   // buttons_background
@@ -206,6 +221,7 @@ static void destroy_ui(void) {
   bitmap_layer_destroy(lane_top);
   bitmap_layer_destroy(opponent);
   bitmap_layer_destroy(player);
+  bitmap_layer_destroy(trees);
   bitmap_layer_destroy(buildings);
   bitmap_layer_destroy(buttons_background);
   bitmap_layer_destroy(up);
@@ -224,6 +240,8 @@ static void destroy_ui(void) {
   gbitmap_destroy(s_res_right);
   gbitmap_destroy(s_res_down);
   gbitmap_destroy(s_res_mark);
+  gbitmap_destroy(s_res_trees_black);
+  gbitmap_destroy(s_res_buildings_black);
 }
 // END AUTO-GENERATED UI CODE
 
@@ -231,7 +249,8 @@ static void handle_window_unload(Window* window) {
   app_timer_cancel(rendering_loop);
   app_timer_cancel(update_loop);  
   
-  light_enable(false);
+  if (get_backlight_on())
+    light_enable(false);
   
   destroy_ui();
 }
@@ -495,6 +514,20 @@ static void update() {
   }
 }
 
+void move_backgrounds(void) {
+  if (low_power_mode)
+    return;
+  
+  int trees_x = 124 - (((player_distance+6500)/60) % 169);
+  int buildings_x = 128 - (((player_distance+1500)/30) % 162);
+
+  layer_set_frame(trees_layer, GRect(trees_x, 14, 41, 28));
+  layer_mark_dirty(trees_layer);
+
+  layer_set_frame(buildings_layer, GRect(buildings_x, 14, 34, 28));
+  layer_mark_dirty(buildings_layer); 
+}
+
 static void render() {  
   layer_set_frame(rpm_layer, GRect(23, 140, player_rpm/100, 8));
   layer_mark_dirty(rpm_layer);
@@ -513,16 +546,13 @@ static void render() {
     if (opponent_x>128) opponent_x = 128;
     if (opponent_x<-100) opponent_x = -100;
     
-    int buildings_x = 128 - (((player_distance+380)/20) % 162);
-    
     layer_set_frame(player_layer, GRect(player_x, 93, 100, 30));
     layer_mark_dirty(player_layer);
     
     layer_set_frame(opponent_layer, GRect(opponent_x, 52, 100, 30));
     layer_mark_dirty(opponent_layer);
     
-    layer_set_frame(buildings_layer, GRect(buildings_x, 14, 34, 28));
-    layer_mark_dirty(buildings_layer);
+    move_backgrounds();
     
     char *duration_text = "xxxxxxxxxx";
     long race_duration = get_race_duration();
@@ -552,7 +582,7 @@ static void render() {
     layer_mark_dirty(info_layer);
   }
   
-  rendering_loop = app_timer_register(RENDERING_INTERVAL, render, NULL);
+  rendering_loop = app_timer_register(rendering_interval, render, NULL);
 }
 
 void show_race(void) {
@@ -563,11 +593,13 @@ void show_race(void) {
   window_stack_push(s_window, true);
   window_set_click_config_provider(s_window, click_config_provider);
   
-  light_enable(true);
+  if (get_backlight_on())
+    light_enable(true);
   
   rpm_layer = bitmap_layer_get_layer(rpm);
   player_layer = bitmap_layer_get_layer(player);
   opponent_layer = bitmap_layer_get_layer(opponent);
+  trees_layer = bitmap_layer_get_layer(trees);
   buildings_layer = bitmap_layer_get_layer(buildings);
   gear_layer = text_layer_get_layer(gear);
   duration_layer = text_layer_get_layer(duration);
@@ -655,9 +687,20 @@ void show_race(void) {
     
   progress_width = 0;
   
+  bitmap_layer_set_compositing_mode(trees, GCompOpClear);
+  bitmap_layer_set_compositing_mode(buildings, GCompOpClear);
+  
+  low_power_mode = get_low_power();
+  rendering_interval = low_power_mode ? LOW_POWER_RENDERING_INTERVAL : HIGH_POWER_RENDERING_INTERVAL;
+  
+  layer_set_hidden(buildings_layer, low_power_mode);
+  layer_set_hidden(trees_layer, low_power_mode);
+  
+  move_backgrounds();
+  
   update_counter = 0; 
   update_loop = app_timer_register(UPDATE_INTERVAL, update, NULL);
-  rendering_loop = app_timer_register(RENDERING_INTERVAL, render, NULL);
+  rendering_loop = app_timer_register(rendering_interval, render, NULL);
 }
 
 void hide_race(void) {  

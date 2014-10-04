@@ -13,6 +13,9 @@ static const uint8_t SETTING_ID_BEST_TIME_SCORE = 31;
 
 static const uint8_t SETTING_ID_BUDGET = 40;
 
+static const uint8_t SETTING_ID_BACKLIGHT_ON = 50;
+static const uint8_t SETTING_ID_LOW_POWER = 51;
+
 static const int DIFFICULTY_COEFFICIENT_EASY = 9;
 static const int DIFFICULTY_COEFFICIENT_MEDIUM = 11;
 static const int DIFFICULTY_COEFFICIENT_HARD = 13;
@@ -51,6 +54,8 @@ int32_t get_difficulty(void);
 int32_t get_best_time_duration(void);
 int32_t get_best_time_score(void);
 int32_t get_budget(void);
+bool get_backlight_on(void);
+bool get_low_power(void);
 
 void set_car_type(int value);
 void set_car_speed(int32_t value);
@@ -61,3 +66,5 @@ void set_difficulty(int32_t value);
 void set_best_time_duration(int32_t value);
 void set_best_time_score(int32_t value);
 void set_budget(int32_t value);
+void set_backlight_on(bool value);
+void set_low_power(bool value);
