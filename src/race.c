@@ -5,13 +5,14 @@
   
 static const int UPDATE_INTERVAL = 10;
 static const int HIGH_POWER_RENDERING_INTERVAL = 30;
-static const int LOW_POWER_RENDERING_INTERVAL = 40;
+static const int LOW_POWER_RENDERING_INTERVAL = 35;
   
 static Layer *rpm_layer;
 static Layer *player_layer;
 static Layer *opponent_layer;
+static Layer *mountains_layer_a;
+static Layer *mountains_layer_b;
 static Layer *trees_layer;
-static Layer *buildings_layer;
 static Layer *gear_layer;
 static Layer *duration_layer;
 static Layer *info_layer;
@@ -65,14 +66,14 @@ static GFont s_res_gothic_14;
 static GFont s_res_gothic_28_bold;
 static GBitmap *s_res_racing;
 static GBitmap *s_res_muscle;
-static GBitmap *s_res_buildings;
+static GBitmap *s_res_trees;
 static GBitmap *s_res_up;
 static GBitmap *s_res_nitro;
 static GBitmap *s_res_right;
 static GBitmap *s_res_down;
 static GBitmap *s_res_mark;
+static GBitmap *s_res_mountains;
 static GBitmap *s_res_trees_black;
-static GBitmap *s_res_buildings_black;
 static TextLayer *info;
 static TextLayer *gear;
 static BitmapLayer *lane_bottom;
@@ -80,8 +81,9 @@ static BitmapLayer *progress;
 static BitmapLayer *lane_top;
 static BitmapLayer *opponent;
 static BitmapLayer *player;
+static BitmapLayer *mountains_a;
+static BitmapLayer *mountains_b;
 static BitmapLayer *trees;
-static BitmapLayer *buildings;
 static BitmapLayer *buttons_background;
 static BitmapLayer *up;
 static BitmapLayer *nitro;
@@ -105,8 +107,8 @@ static void initialise_ui(void) {
   s_res_right = gbitmap_create_with_resource(RESOURCE_ID_right);
   s_res_down = gbitmap_create_with_resource(RESOURCE_ID_DOWN);
   s_res_mark = gbitmap_create_with_resource(RESOURCE_ID_MARK);
+  s_res_mountains = gbitmap_create_with_resource(RESOURCE_ID_MOUNTAINS);
   s_res_trees_black = gbitmap_create_with_resource(RESOURCE_ID_TREES_BLACK);
-  s_res_buildings_black = gbitmap_create_with_resource(RESOURCE_ID_BUILDINGS_BLACK);
   // info
   info = text_layer_create(GRect(21, 123, 102, 17));
   text_layer_set_text(info, " ");
@@ -148,17 +150,23 @@ static void initialise_ui(void) {
   bitmap_layer_set_background_color(player, GColorWhite);
   layer_add_child(window_get_root_layer(s_window), (Layer *)player);
   
+  // mountains_a
+  mountains_a = bitmap_layer_create(GRect(0, 14, 144, 28));
+  bitmap_layer_set_bitmap(mountains_a, s_res_mountains);
+  bitmap_layer_set_background_color(opponent, GColorWhite);
+  layer_add_child(window_get_root_layer(s_window), (Layer *)mountains_a);
+  
+  // mountains_b
+  mountains_b = bitmap_layer_create(GRect(144, 14, 144, 28));
+  bitmap_layer_set_bitmap(mountains_b, s_res_mountains);
+  bitmap_layer_set_background_color(opponent, GColorWhite);
+  layer_add_child(window_get_root_layer(s_window), (Layer *)mountains_b);
+  
   // trees
-  trees = bitmap_layer_create(GRect(10, 14, 41, 28));
+  trees = bitmap_layer_create(GRect(90, 14, 41, 28));
   bitmap_layer_set_bitmap(trees, s_res_trees_black);
   bitmap_layer_set_background_color(opponent, GColorClear);
   layer_add_child(window_get_root_layer(s_window), (Layer *)trees);
-  
-  // buildings
-  buildings = bitmap_layer_create(GRect(90, 14, 34, 28));
-  bitmap_layer_set_bitmap(buildings, s_res_buildings_black);
-  bitmap_layer_set_background_color(opponent, GColorClear);
-  layer_add_child(window_get_root_layer(s_window), (Layer *)buildings);
   
   // buttons_background
   buttons_background = bitmap_layer_create(GRect(128, 0, 18, 152));
@@ -221,8 +229,9 @@ static void destroy_ui(void) {
   bitmap_layer_destroy(lane_top);
   bitmap_layer_destroy(opponent);
   bitmap_layer_destroy(player);
+  bitmap_layer_destroy(mountains_a);
+  bitmap_layer_destroy(mountains_b);
   bitmap_layer_destroy(trees);
-  bitmap_layer_destroy(buildings);
   bitmap_layer_destroy(buttons_background);
   bitmap_layer_destroy(up);
   bitmap_layer_destroy(nitro);
@@ -234,14 +243,14 @@ static void destroy_ui(void) {
   text_layer_destroy(duration);
   gbitmap_destroy(s_res_racing);
   gbitmap_destroy(s_res_muscle);
-  gbitmap_destroy(s_res_buildings);
+  gbitmap_destroy(s_res_trees);
   gbitmap_destroy(s_res_up);
   gbitmap_destroy(s_res_nitro);
   gbitmap_destroy(s_res_right);
   gbitmap_destroy(s_res_down);
   gbitmap_destroy(s_res_mark);
+  gbitmap_destroy(s_res_mountains);
   gbitmap_destroy(s_res_trees_black);
-  gbitmap_destroy(s_res_buildings_black);
 }
 // END AUTO-GENERATED UI CODE
 
@@ -518,14 +527,17 @@ void move_backgrounds(void) {
   if (low_power_mode)
     return;
   
-  int trees_x = 124 - (((player_distance+6500)/60) % 169);
-  int buildings_x = 128 - (((player_distance+1500)/30) % 162);
+  int mountains_x = -((player_distance/300) % 144);
+  int trees_x = 144-(((player_distance)/30) % 185);
+
+  layer_set_frame(mountains_layer_a, GRect(mountains_x, 14, 144, 28));
+  layer_mark_dirty(mountains_layer_a);
+  
+  layer_set_frame(mountains_layer_b, GRect(mountains_x + 144, 14, 144, 28));
+  layer_mark_dirty(mountains_layer_b);
 
   layer_set_frame(trees_layer, GRect(trees_x, 14, 41, 28));
-  layer_mark_dirty(trees_layer);
-
-  layer_set_frame(buildings_layer, GRect(buildings_x, 14, 34, 28));
-  layer_mark_dirty(buildings_layer); 
+  layer_mark_dirty(trees_layer); 
 }
 
 static void render() {  
@@ -599,8 +611,9 @@ void show_race(void) {
   rpm_layer = bitmap_layer_get_layer(rpm);
   player_layer = bitmap_layer_get_layer(player);
   opponent_layer = bitmap_layer_get_layer(opponent);
+  mountains_layer_a = bitmap_layer_get_layer(mountains_a);
+  mountains_layer_b = bitmap_layer_get_layer(mountains_b);
   trees_layer = bitmap_layer_get_layer(trees);
-  buildings_layer = bitmap_layer_get_layer(buildings);
   gear_layer = text_layer_get_layer(gear);
   duration_layer = text_layer_get_layer(duration);
   info_layer = text_layer_get_layer(info);  
@@ -688,13 +701,13 @@ void show_race(void) {
   progress_width = 0;
   
   bitmap_layer_set_compositing_mode(trees, GCompOpClear);
-  bitmap_layer_set_compositing_mode(buildings, GCompOpClear);
   
   low_power_mode = get_low_power();
   rendering_interval = low_power_mode ? LOW_POWER_RENDERING_INTERVAL : HIGH_POWER_RENDERING_INTERVAL;
   
-  layer_set_hidden(buildings_layer, low_power_mode);
   layer_set_hidden(trees_layer, low_power_mode);
+  //layer_set_hidden(mountains_layer_a, low_power_mode);
+  layer_set_hidden(mountains_layer_b, low_power_mode);
   
   move_backgrounds();
   

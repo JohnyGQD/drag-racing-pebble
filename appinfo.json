@@ -9,6 +9,11 @@
     "resources": {
         "media": [
             {
+                "file": "images/mountains.png",
+                "name": "MOUNTAINS",
+                "type": "png"
+            },
+            {
                 "file": "images/trees.png",
                 "name": "TREES",
                 "type": "png-trans"

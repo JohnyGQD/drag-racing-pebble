@@ -2,7 +2,7 @@
 #include <pebble.h>
 #include <main_menu.h>
   
-int main() {
+int main() {  
     show_main_menu();
     app_event_loop();
     return 0;

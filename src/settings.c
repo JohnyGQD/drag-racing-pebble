@@ -56,7 +56,7 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
     case 1:
       graphics_draw_text(ctx, "Power mode", fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD), label_rect, GTextOverflowModeFill, GTextAlignmentLeft, NULL);
       graphics_draw_text(ctx, get_low_power() ? "Low" : "High", fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD), value_rect, GTextOverflowModeFill, GTextAlignmentRight, NULL);
-      graphics_draw_text(ctx, "Visuals and battery", fonts_get_system_font(FONT_KEY_GOTHIC_14), description_rect, GTextOverflowModeFill, GTextAlignmentLeft, NULL);
+      graphics_draw_text(ctx, "Animations and battery", fonts_get_system_font(FONT_KEY_GOTHIC_14), description_rect, GTextOverflowModeFill, GTextAlignmentLeft, NULL);
       break;
   }
 }
