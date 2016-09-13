@@ -11,6 +11,13 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/icon_small.png",
+                    "menuIcon": true,
+                    "name": "ICON_SMALL",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/up.png",
                     "name": "UP",
                     "type": "bitmap"
@@ -56,7 +63,6 @@
                 },
                 {
                     "file": "images/icon.png",
-                    "menuIcon": true,
                     "name": "ICON",
                     "type": "bitmap"
                 },
@@ -85,5 +91,5 @@
             "watchface": false
         }
     },
-    "version": "1.9.0"
+    "version": "1.10.0"
 }
