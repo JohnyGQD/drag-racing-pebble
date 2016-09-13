@@ -1,6 +1,6 @@
 #include "settings.h"
+#include "main.h"
 #include <pebble.h>
-#include <main.h>
 
 // BEGIN AUTO-GENERATED UI CODE; DO NOT MODIFY
 static Window *s_window;

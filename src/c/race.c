@@ -1,7 +1,7 @@
 #include "race.h"
+#include "main.h"
+#include "race_result.h"
 #include <pebble.h>
-#include <main.h>
-#include <race_result.h>
   
 static const int UPDATE_INTERVAL = 10;
 static const int HIGH_POWER_RENDERING_INTERVAL = 30;

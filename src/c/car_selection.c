@@ -1,6 +1,6 @@
 #include "car_selection.h"
+#include "main.h"
 #include <pebble.h>
-#include <main.h>
   
 static GBitmap *s_res_racing;
 static GBitmap *s_res_muscle;

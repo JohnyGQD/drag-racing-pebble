@@ -1,6 +1,6 @@
 #include "help.h"
+#include "main.h"
 #include <pebble.h>
-#include <main.h>
   
 static ScrollLayer *scroll_layer;
 static TextLayer *text_layer;

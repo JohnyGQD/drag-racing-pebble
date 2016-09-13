@@ -1,7 +1,7 @@
 #include "garage.h"
+#include "main.h"
+#include "upgrades.h"
 #include <pebble.h>
-#include <main.h>
-#include <upgrades.h>
   
 static GBitmap *car_bitmap;
 

@@ -1,6 +1,6 @@
 #include "main.h"
+#include "main_menu.h"
 #include <pebble.h>
-#include <main_menu.h>
   
 int main() {  
     show_main_menu();

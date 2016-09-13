@@ -1,12 +1,12 @@
 #include "main_menu.h"
+#include "main.h"
+#include "race_selection.h"
+#include "car_selection.h"
+#include "garage.h"
+#include "hiscore.h"
+#include "help.h"
+#include "settings.h"
 #include <pebble.h>
-#include <main.h>
-#include <race_selection.h>
-#include <car_selection.h>
-#include <garage.h>
-#include <hiscore.h>
-#include <help.h>
-#include <settings.h>
 
 // BEGIN AUTO-GENERATED UI CODE; DO NOT MODIFY
 static Window *s_window;

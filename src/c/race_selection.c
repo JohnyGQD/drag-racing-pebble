@@ -1,7 +1,7 @@
 #include "race_selection.h"
-#include <pebble.h>  
-#include <main.h>
-#include <race.h>
+#include "main.h"
+#include "race.h"
+#include <pebble.h>
 
 // BEGIN AUTO-GENERATED UI CODE; DO NOT MODIFY
 static Window *s_window;
