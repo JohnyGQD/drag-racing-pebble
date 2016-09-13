@@ -11,20 +11,19 @@
         "resources": {
             "media": [
                 {
-                    "file": "images/icon.png",
-                    "menuIcon": true,
-                    "name": "ICON",
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/buildings.png",
-                    "name": "BUILDINGS",
-                    "targetPlatforms": null,
+                    "file": "images/up.png",
+                    "name": "UP",
                     "type": "bitmap"
                 },
                 {
                     "file": "images/trees.png",
                     "name": "TREES",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/right.png",
+                    "name": "RIGHT",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
@@ -35,24 +34,19 @@
                     "type": "bitmap"
                 },
                 {
+                    "file": "images/nitro.png",
+                    "name": "NITRO",
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/muscle.png",
                     "name": "MUSCLE",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
-                    "file": "images/up.png",
-                    "name": "UP",
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/down.png",
-                    "name": "DOWN",
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/nitro.png",
-                    "name": "NITRO",
+                    "file": "images/mountains.png",
+                    "name": "MOUNTAINS",
                     "type": "bitmap"
                 },
                 {
@@ -61,14 +55,20 @@
                     "type": "bitmap"
                 },
                 {
-                    "file": "images/right.png",
-                    "name": "RIGHT",
-                    "targetPlatforms": null,
+                    "file": "images/icon.png",
+                    "menuIcon": true,
+                    "name": "ICON",
                     "type": "bitmap"
                 },
                 {
-                    "file": "images/mountains.png",
-                    "name": "MOUNTAINS",
+                    "file": "images/down.png",
+                    "name": "DOWN",
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/buildings.png",
+                    "name": "BUILDINGS",
+                    "targetPlatforms": null,
                     "type": "bitmap"
                 }
             ]
@@ -85,5 +85,5 @@
             "watchface": false
         }
     },
-    "version": "1.8.0"
+    "version": "1.9.0"
 }
