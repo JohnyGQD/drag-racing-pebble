@@ -4,6 +4,7 @@
 
 // BEGIN AUTO-GENERATED UI CODE; DO NOT MODIFY
 static Window *s_window;
+static GRect bounds;
 static GFont s_res_gothic_28_bold;
 static GFont s_res_gothic_18;
 static TextLayer *big_result;
@@ -14,40 +15,44 @@ static TextLayer *budget;
 
 static void initialise_ui(void) {
   s_window = window_create();
-  window_set_fullscreen(s_window, false);
+  #ifdef PBL_SDK_2
+    window_set_fullscreen(s_window, true);
+  #endif
+  
+  bounds = layer_get_bounds(window_get_root_layer(s_window));
   
   s_res_gothic_28_bold = fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD);
   s_res_gothic_18 = fonts_get_system_font(FONT_KEY_GOTHIC_18);
   // big_result
-  big_result = text_layer_create(GRect(0, 5, 144, 28));
+  big_result = text_layer_create(GRect(0, ((bounds.size.h-168)/2)+15, bounds.size.w, 28));
   text_layer_set_text(big_result, "You win!");
   text_layer_set_text_alignment(big_result, GTextAlignmentCenter);
   text_layer_set_font(big_result, s_res_gothic_28_bold);
   layer_add_child(window_get_root_layer(s_window), (Layer *)big_result);
   
   // hiscore
-  hiscore = text_layer_create(GRect(0, 80, 144, 28));
+  hiscore = text_layer_create(GRect(0, ((bounds.size.h-168)/2)+90, bounds.size.w, 28));
   text_layer_set_text(hiscore, "New record!");
   text_layer_set_text_alignment(hiscore, GTextAlignmentCenter);
   text_layer_set_font(hiscore, s_res_gothic_28_bold);
   layer_add_child(window_get_root_layer(s_window), (Layer *)hiscore);
   
   // reward
-  reward = text_layer_create(GRect(0, 40, 144, 20));
+  reward = text_layer_create(GRect(0, ((bounds.size.h-168)/2)+50, bounds.size.w, 20));
   text_layer_set_text(reward, "Reward: 0");
   text_layer_set_text_alignment(reward, GTextAlignmentCenter);
   text_layer_set_font(reward, s_res_gothic_18);
   layer_add_child(window_get_root_layer(s_window), (Layer *)reward);
   
   // duration
-  duration = text_layer_create(GRect(0, 60, 144, 20));
+  duration = text_layer_create(GRect(0, ((bounds.size.h-168)/2)+70, bounds.size.w, 20));
   text_layer_set_text(duration, "Time: 0.0 s");
   text_layer_set_text_alignment(duration, GTextAlignmentCenter);
   text_layer_set_font(duration, s_res_gothic_18);
   layer_add_child(window_get_root_layer(s_window), (Layer *)duration);
   
   // budget
-  budget = text_layer_create(GRect(0, 115, 144, 24));
+  budget = text_layer_create(GRect(0, ((bounds.size.h-168)/2)+125, bounds.size.w, 24));
   text_layer_set_text(budget, "Budget: 0");
   text_layer_set_text_alignment(budget, GTextAlignmentCenter);
   text_layer_set_font(budget, s_res_gothic_18);
@@ -84,6 +89,11 @@ void show_race_result(void) {
   window_set_window_handlers(s_window, (WindowHandlers) {
     .unload = handle_window_unload,
   });
+  
+  #ifdef PBL_COLOR
+    window_set_background_color(s_window, GColorPastelYellow);
+  #endif
+
   window_stack_push(s_window, true);
   
   window_set_click_config_provider(s_window, click_config_provider);
@@ -121,6 +131,16 @@ void show_race_result(void) {
   } else {
     layer_set_hidden(text_layer_get_layer(hiscore), true);
   }
+  
+  #ifdef PBL_COLOR
+    text_layer_set_background_color(big_result, GColorPastelYellow);
+    text_layer_set_text_color(big_result, GColorDarkCandyAppleRed);
+    text_layer_set_background_color(reward, GColorPastelYellow);
+    text_layer_set_background_color(duration, GColorPastelYellow);
+    text_layer_set_background_color(budget, GColorPastelYellow);
+    text_layer_set_background_color(hiscore, GColorPastelYellow);
+    text_layer_set_text_color(hiscore, GColorDarkCandyAppleRed);
+  #endif
 }
 
 void hide_race_result(void) {

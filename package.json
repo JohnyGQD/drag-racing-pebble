@@ -1,0 +1,89 @@
+{
+    "author": "Jan Gruncl",
+    "dependencies": {},
+    "keywords": [],
+    "name": "drag-racing",
+    "pebble": {
+        "displayName": "Drag Racing",
+        "enableMultiJS": false,
+        "messageKeys": [],
+        "projectType": "native",
+        "resources": {
+            "media": [
+                {
+                    "file": "images/icon.png",
+                    "menuIcon": true,
+                    "name": "ICON",
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/buildings.png",
+                    "name": "BUILDINGS",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trees.png",
+                    "name": "TREES",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/racing.png",
+                    "name": "RACING",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/muscle.png",
+                    "name": "MUSCLE",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/up.png",
+                    "name": "UP",
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/down.png",
+                    "name": "DOWN",
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/nitro.png",
+                    "name": "NITRO",
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/mark.png",
+                    "name": "MARK",
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/right.png",
+                    "name": "RIGHT",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/mountains.png",
+                    "name": "MOUNTAINS",
+                    "type": "bitmap"
+                }
+            ]
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "aplite",
+            "basalt",
+            "chalk",
+            "diorite"
+        ],
+        "uuid": "3aa57c3d-5cfd-4c42-9d00-ea019c49b393",
+        "watchapp": {
+            "watchface": false
+        }
+    },
+    "version": "1.8.0"
+}

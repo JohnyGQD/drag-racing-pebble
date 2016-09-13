@@ -7,15 +7,29 @@ static GBitmap *s_res_muscle;
 
 // BEGIN AUTO-GENERATED UI CODE; DO NOT MODIFY
 static Window *s_window;
+static GRect bounds;
 static MenuLayer *menu;
 
 static void initialise_ui(void) {
   s_window = window_create();
-  window_set_fullscreen(s_window, false);
+  #ifdef PBL_SDK_2
+    window_set_fullscreen(s_window, true);
+  #endif
   
-  // menu
-  menu = menu_layer_create(GRect(0, 0, 144, 152));
+  bounds = layer_get_bounds(window_get_root_layer(s_window));
+  
+  menu = menu_layer_create(GRect(0, 0, bounds.size.w, bounds.size.h));
   menu_layer_set_click_config_onto_window(menu, s_window);
+  
+  #ifdef PBL_COLOR
+    menu_layer_set_normal_colors(menu, GColorPastelYellow, GColorBlack);
+    menu_layer_set_highlight_colors(menu, GColorDarkCandyAppleRed, GColorWhite);
+  #endif
+  
+  #ifdef PBL_ROUND
+    menu_layer_set_center_focused(menu, true);
+  #endif
+    
   layer_add_child(window_get_root_layer(s_window), (Layer *)menu);
 }
 
@@ -46,27 +60,43 @@ static int16_t menu_get_cell_height_callback(MenuLayer *menu_layer, MenuIndex *c
 }
 
 static void menu_draw_header_callback(GContext* ctx, const Layer *cell_layer, uint16_t section_index, void *data) {
-  graphics_context_set_text_color(ctx, GColorBlack);
-  graphics_draw_text(ctx, "Choose starting car", fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD), GRect(0, -3, 144, 18), GTextOverflowModeFill, GTextAlignmentCenter, NULL);
+  #ifdef PBL_COLOR
+    graphics_context_set_fill_color(ctx, GColorBulgarianRose);
+    graphics_context_set_text_color(ctx, GColorWhite);
+  #else
+    graphics_context_set_fill_color(ctx, GColorWhite);
+    graphics_context_set_text_color(ctx, GColorBlack);
+  #endif
+    
+  graphics_fill_rect(ctx, GRect(0, 0, bounds.size.w, 18), 0, GCornerNone);
+    
+  graphics_draw_text(ctx, "Choose starting car", fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD), GRect(0, -3, bounds.size.w, 18), GTextOverflowModeFill, GTextAlignmentCenter, NULL);
 }
 
 static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuIndex *cell_index, void *data) {
-  graphics_context_set_text_color(ctx, GColorBlack);
+  /*#ifdef PBL_COLOR    
+    graphics_context_set_fill_color(ctx, GColorPastelYellow);
+    graphics_fill_rect(ctx, GRect(0, 0, 144, 78), 0, GCornerNone);
+  #endif*/
+
+  #ifdef PBL_SDK_2
+    graphics_context_set_text_color(ctx, GColorBlack);
+  #endif
   
-  GRect row_title_rect = GRect(4, -6, 134, 28);
-  GRect row_image_rect = GRect(22, 28, 100, 30);
-  GRect row_subtitle_rect = GRect(4, 55, 134, 18);
+  GRect row_title_rect = GRect(4, -6, bounds.size.w-8, 28);
+  GRect row_image_rect = GRect((bounds.size.w-100)/2, 28, 100, 30);
+  GRect row_subtitle_rect = GRect(4, 55, bounds.size.w-8, 18);
   
   switch (cell_index->row) {
     case 0:
-      graphics_draw_text(ctx, "Muscle car", fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD), row_title_rect, GTextOverflowModeFill, GTextAlignmentLeft, NULL);    
+      graphics_draw_text(ctx, "Muscle car", fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD), row_title_rect, GTextOverflowModeFill, GTextAlignmentCenter, NULL);    
       graphics_draw_bitmap_in_rect(ctx, s_res_muscle, row_image_rect);
-      graphics_draw_text(ctx, "+ acceleration & grip", fonts_get_system_font(FONT_KEY_GOTHIC_18), row_subtitle_rect, GTextOverflowModeFill, GTextAlignmentLeft, NULL);
+      graphics_draw_text(ctx, "+ acceleration & grip", fonts_get_system_font(FONT_KEY_GOTHIC_18), row_subtitle_rect, GTextOverflowModeFill, GTextAlignmentCenter, NULL);
       break;
     case 1:
-      graphics_draw_text(ctx, "Racing car", fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD), row_title_rect, GTextOverflowModeFill, GTextAlignmentLeft, NULL);
+      graphics_draw_text(ctx, "Racing car", fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD), row_title_rect, GTextOverflowModeFill, GTextAlignmentCenter, NULL);
       graphics_draw_bitmap_in_rect(ctx, s_res_racing, row_image_rect);  
-      graphics_draw_text(ctx, "+ speed & nitro", fonts_get_system_font(FONT_KEY_GOTHIC_18), row_subtitle_rect, GTextOverflowModeFill, GTextAlignmentLeft, NULL);    
+      graphics_draw_text(ctx, "+ speed & nitro", fonts_get_system_font(FONT_KEY_GOTHIC_18), row_subtitle_rect, GTextOverflowModeFill, GTextAlignmentCenter, NULL);    
       break;
   }
 }
@@ -99,8 +129,8 @@ void show_car_selection(void) {
   });
   window_stack_push(s_window, true);
   
-  s_res_racing = gbitmap_create_with_resource(RESOURCE_ID_RACING);
-  s_res_muscle = gbitmap_create_with_resource(RESOURCE_ID_MUSCLE);
+  s_res_racing = gbitmap_create_with_resource(RESOURCE_ID_RACING/*_BW*/);
+  s_res_muscle = gbitmap_create_with_resource(RESOURCE_ID_MUSCLE/*_BW*/);
   
   menu_layer_set_callbacks(menu, NULL, (MenuLayerCallbacks){
     .get_num_sections = menu_get_num_sections_callback,
